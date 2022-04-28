@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+      project: t-clo-902
+      stage: recette
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+        project: t-clo-902
+        stage: recette
+    spec:
+      containers:
+      - image: mariadb:10.7
+        name: mysql
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        - name: MYSQL_USER
+          value: tc2-user
+        - name: MYSQL_PASSWORD
+          value: tc2-password
+        - name: MYSQL_DATABASE
+          value: tc2-database
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: tc2-mysql-pvc

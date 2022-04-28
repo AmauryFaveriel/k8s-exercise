@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+      project: t-clo-902
+      stage: recette
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend
+        project: t-clo-902
+        stage: recette
+    spec:
+      containers:
+      - name: backend
+        image: amauryfaveriel/t-clo-902-back:1.0
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+        - name: DB_HOST
+          value: svc-mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: tc2-database
+        - name: DB_USERNAME
+          value: tc2-user
+        - name: DB_PASSWORD
+          value: tc2-password
+        ports:
+        - containerPort: 80

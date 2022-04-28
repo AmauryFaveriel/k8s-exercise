@@ -1,0 +1,14 @@
+appli:
+  name: backend
+  replicas: "2"
+  image:
+    owner: amauryfaveriel
+    name: t-clo-902-back
+    version: "1.0"
+
+service:
+  name: svc-backend
+  type: ClusterIP
+
+ports:
+  applicationPort: "80"

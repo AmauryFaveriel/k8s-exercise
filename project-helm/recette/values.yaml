@@ -1,0 +1,55 @@
+db_vars:
+  name: tc2-database
+  user: tc2-user
+  password: tc2-password
+
+global:
+  project:
+    name: t-clo-902
+    stage: recette
+  backend:
+    appli:
+      name: backend
+      replicas: 2
+      image:
+        owner: amauryfaveriel
+        name: t-clo-902-back
+        version: "1.0"
+      env:
+        - name: DB_HOST
+          value: svc-mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: tc2-database
+        - name: DB_USERNAME
+          value: tc2-user
+        - name: DB_PASSWORD
+          value: tc2-password
+    service:
+      name: svc-backend
+      type: ClusterIP
+    ports:
+      enterPort: "80"
+      applicationPort: "80"
+  mysql:
+    appli:
+      name: mysql
+      env:
+        - name: MYSQL_USER
+          value: tc2-user
+        - name: MYSQL_PASSWORD
+          value: tc2-password
+        - name: MYSQL_DATABASE
+          value: tc2-database
+    image:
+      name: mariadb
+      version: "10.7"
+    ports:
+      applicationPort: "3306"
+      enterPort: "3306"
+    service:
+      name: svc-mysql
+      type: ClusterIP
+    pvc:
+      name: tc2-mysql-pvc
