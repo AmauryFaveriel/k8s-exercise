@@ -1,0 +1,14 @@
+appli:
+  name: frontend
+  replicas: "2"
+  image:
+    owner: ppilorget
+    name: t-clo-902-front
+    version: "1"
+
+service:
+  name: svc-frontend
+  type: ClusterIP
+
+ports:
+  applicationPort: "4200"
