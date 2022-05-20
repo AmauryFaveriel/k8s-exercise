@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.backend.appli.name }}
+  name: {{ .Values.global.frontend.appli.name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.backend.appli.name }}
+      app: {{ .Values.global.frontend.appli.name }}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
-  replicas: {{ .Values.global.backend.appli.replicas }}
+  replicas: {{ .Values.global.frontend.appli.replicas }}
   template:
     metadata:
       labels:
-        app: {{ .Values.global.backend.appli.name }}
+        app: {{ .Values.global.frontend.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - name: {{ .Values.global.backend.appli.name }}
-        image: {{ .Values.global.backend.appli.image.owner }}/{{ .Values.global.backend.appli.image.name }}:{{ .Values.global.backend.appli.image.version }}
+      - name: {{ .Values.global.frontend.appli.name }}
+        image: {{ .Values.global.frontend.appli.image.owner }}/{{ .Values.global.frontend.appli.image.name }}:{{ .Values.global.frontend.appli.image.version }}
         imagePullPolicy: Always
         env:
-        {{- range .Values.global.backend.appli.env }}
+        {{- range .Values.global.frontend.appli.env }}
         - name: {{ .name }}
           value: {{ .value }}
         {{- end}}
         ports:
-        - containerPort: {{ .Values.global.backend.ports.applicationPort }}
+        - containerPort: {{ .Values.global.frontend.ports.applicationPort }}

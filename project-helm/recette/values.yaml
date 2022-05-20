@@ -53,3 +53,20 @@ global:
       type: ClusterIP
     pvc:
       name: tc2-mysql-pvc
+  frontend:
+    appli:
+      name: frontend
+      replicas: 2
+      image:
+        owner: deexma
+        name: front
+        version: "1"
+      env:
+        - name: api_endpoint
+          value: svc-backend
+      ports:
+        applicationPort: "4200"
+        enterPort: "4200"
+      service:
+        name: svc-frontend
+        type: ClusterIP

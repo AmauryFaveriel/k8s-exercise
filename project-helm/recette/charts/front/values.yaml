@@ -2,8 +2,8 @@ appli:
   name: frontend
   replicas: "2"
   image:
-    owner: ppilorget
-    name: t-clo-902-front
+    owner: deexma
+    name: front
     version: "1"
 
 service:
