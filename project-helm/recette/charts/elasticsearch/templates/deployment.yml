@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.mysql.appli.name}}
+  name: {{ .Values.global.elasticsearch.appli.name}}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.mysql.appli.name}}
+      app: {{ .Values.global.elasticsearch.appli.name}}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
   strategy:
@@ -13,27 +13,27 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.global.mysql.appli.name }}
+        app: {{ .Values.global.elasticsearch.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - image: {{ .Values.global.mysql.image.name}}:{{ .Values.global.mysql.image.version }}
-        name: {{ .Values.global.mysql.appli.name}}
+      - image: {{ .Values.deployment.image.name}}:{{ .Values.deployment.image.version }}
+        name: {{ .Values.global.elasticsearch.appli.name}}
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
           value: password
-        {{- range .Values.global.mysql.appli.env }}
+        {{- range .Values.global.elasticsearch.appli.env }}
         - name: {{ .name }}
           value: {{ .value }}
         {{- end}}
         ports:
-        - containerPort: {{ .Values.global.mysql.ports.applicationPort }}
+        - containerPort: {{ .Values.global.elasticsearch.ports.applicationPort }}
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/elasticsearch
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.global.mysql.pvc.name }}
+          claimName: {{ .Values.pvc.name }}
