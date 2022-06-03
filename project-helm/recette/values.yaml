@@ -9,7 +9,7 @@ global:
     stage: recette
   backend:
     appli:
-      name: backend
+      name: backend-helm
       replicas: 2
       image:
         owner: amauryfaveriel
@@ -17,24 +17,26 @@ global:
         version: "1.0"
       env:
         - name: DB_HOST
-          value: svc-mysql
+          value: svc-mysql-helm
         - name: DB_PORT
-          value: "3306"
+          value: "\"3306\""
         - name: DB_DATABASE
           value: tc2-database
         - name: DB_USERNAME
           value: tc2-user
         - name: DB_PASSWORD
           value: tc2-password
+        - name: ELASTICSEARCH_URI
+          value: svc-elasticsearch-helm:9200
     service:
-      name: svc-backend
+      name: svc-backend-helm
       type: ClusterIP
     ports:
       enterPort: "80"
       applicationPort: "80"
   mysql:
     appli:
-      name: mysql
+      name: mysql-helm
       env:
         - name: MYSQL_USER
           value: tc2-user
@@ -49,13 +51,13 @@ global:
       applicationPort: "3306"
       enterPort: "3306"
     service:
-      name: svc-mysql
+      name: svc-mysql-helm
       type: ClusterIP
     pvc:
-      name: tc2-mysql-pvc
+      name: tc2-mysql-pvc-helm
   frontend:
     appli:
-      name: frontend
+      name: frontend-helm
       replicas: 2
       image:
         owner: deexma
@@ -63,10 +65,21 @@ global:
         version: "1"
       env:
         - name: api_endpoint
-          value: svc-backend
+          value: svc-backend-helm
       ports:
         applicationPort: "4200"
         enterPort: "4200"
       service:
-        name: svc-frontend
+        name: svc-frontend-helm
         type: ClusterIP
+  elasticsearch:
+    appli:
+      name: elasticsearch-helm
+      env:
+        - name: discovery.type
+          value: single-node
+    service:
+      name: svc-elasticsearch-helm
+    ports:
+      enterPort: 9200
+      applicationPort: 9200
