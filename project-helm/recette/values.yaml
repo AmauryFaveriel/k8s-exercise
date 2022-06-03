@@ -26,6 +26,8 @@ global:
           value: tc2-user
         - name: DB_PASSWORD
           value: tc2-password
+        - name: ELASTICSEARCH_URI
+          value: svc-elasticsearch-helm:9200
     service:
       name: svc-backend-helm
       type: ClusterIP
@@ -53,3 +55,14 @@ global:
       type: ClusterIP
     pvc:
       name: tc2-mysql-pvc-helm
+  elasticsearch:
+    appli:
+      name: elasticsearch-helm
+      env:
+        - name: discovery.type
+          value: single-node
+    service:
+      name: svc-elasticsearch-helm
+    ports:
+      enterPort: 9200
+      applicationPort: 9200
