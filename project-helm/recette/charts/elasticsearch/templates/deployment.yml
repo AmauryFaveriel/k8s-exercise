@@ -28,9 +28,9 @@ spec:
         ports:
         - containerPort: {{ .Values.global.elasticsearch.ports.applicationPort }}
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: elasticsearch-persistent-storage
           mountPath: /var/lib/elasticsearch
       volumes:
-      - name: mysql-persistent-storage
+      - name: elasticsearch-persistent-storage
         persistentVolumeClaim:
           claimName: {{ .Values.pvc.name }}

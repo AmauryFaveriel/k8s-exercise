@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.rabbitmq.service.name }}
+  labels:
+    app: {{ .Values.global.rabbitmq.service.name }}
+    project: {{ .Values.global.project.name }}
+    stage: {{ .Values.global.project.stage }}
+spec:
+  type: {{ .Values.global.rabbitmq.service.type }}
+  ports:
+  - port: {{ .Values.global.rabbitmq.ports.enterPort }}
+    targetPort: {{ .Values.global.rabbitmq.ports.applicationPort}}
+  selector:
+    app: {{ .Values.global.rabbitmq.appli.name }}
