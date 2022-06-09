@@ -1,14 +1,11 @@
-FROM node:16-alpine AS build-env
+FROM node:16-alpine AS build
 
-RUN apk upgrade && apk update
+WORKDIR /app
+COPY ./package.json .
+RUN npm install
+COPY . .
+RUN npm run build:prod
 
-WORKDIR /app/
-COPY ./package.json /app/
-RUN npm --unsafe-perm install
-RUN npm ci
-COPY . /app/
-
-EXPOSE 4200
-
-ENTRYPOINT [ "npm" ]
-CMD [ "start" ]
+FROM nginx:1.21-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist/front /usr/share/nginx/html
