@@ -1,42 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.backend.appli.name }}
+  name: {{ .Values.appli.name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.backend.appli.name }}
+      app: {{ .Values.appli.name }}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
-  replicas: {{ .Values.global.backend.appli.replicas }}
+  replicas: {{ .Values.appli.replicas }}
   template:
     metadata:
       labels:
-        app: {{ .Values.global.backend.appli.name }}
+        app: {{ .Values.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - name: {{ .Values.global.backend.appli.name }}
-        image: {{ .Values.global.backend.appli.image.owner }}/{{ .Values.global.backend.appli.image.name }}:{{ .Values.global.backend.appli.image.version }}
+      - name: {{ .Values.appli.name }}
+        image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         imagePullPolicy: Always
         workingDir: /var/www/html
-        env:
-        {{- range .Values.global.backend.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configmap.name }}
         ports:
-        - containerPort: {{ .Values.global.backend.ports.applicationPort }}
+        - containerPort: {{ .Values.ports.applicationPort }}
       initContainers:
       - name: database-migrate
-        image: {{ .Values.global.backend.appli.image.owner }}/{{ .Values.global.backend.appli.image.name }}:{{ .Values.global.backend.appli.image.version }}
+        image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         workingDir: /var/www/html
-        env:
-        {{- range .Values.global.backend.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configmap.name }}
         command:
           - php
         args:

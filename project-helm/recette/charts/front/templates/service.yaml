@@ -7,9 +7,9 @@ metadata:
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 spec:
-  type: {{ .Values.global.frontend.service.type }}
+  type: {{ .Values.service.type }}
   ports:
   - port: {{ .Values.global.frontend.ports.enterPort }}
-    targetPort: {{ .Values.global.frontend.ports.applicationPort}}
+    targetPort: {{ .Values.ports.applicationPort}}
   selector:
-    app: {{ .Values.global.frontend.appli.name }}
+    app: {{ .Values.appli.name }}

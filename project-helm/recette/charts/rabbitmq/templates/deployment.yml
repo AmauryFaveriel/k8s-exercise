@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.rabbitmq.appli.name}}
+  name: {{ .Values.appli.name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.rabbitmq.appli.name}}
+      app: {{ .Values.appli.name }}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
   strategy:
@@ -13,20 +13,15 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.global.rabbitmq.appli.name }}
+        app: {{ .Values.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - image: {{ .Values.global.rabbitmq.image.name}}:{{ .Values.global.rabbitmq.image.version }}
-        name: {{ .Values.global.rabbitmq.appli.name}}
-        env:
-        {{- range .Values.global.rabbitmq.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+      - image: {{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
+        name: {{ .Values.appli.name}}
         ports:
-        - containerPort: {{ .Values.global.rabbitmq.ports.applicationPort }}
+        - containerPort: {{ .Values.ports.applicationPort }}
         volumeMounts:
             - name: rabbitmq-conf
               mountPath: /etc/rabbitmq/rabbitmq.conf
@@ -34,7 +29,7 @@ spec:
       volumes:
         - name: rabbitmq-conf
           configMap:
-            name: rabbitmq-helm-configmap
+            name: {{ .Values.configmap.name }}
             items:
             - key: rabbitmq.conf
               path: rabbitmq.conf

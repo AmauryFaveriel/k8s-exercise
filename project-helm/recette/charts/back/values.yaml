@@ -1,14 +1,16 @@
 appli:
-  name: backend
-  replicas: "2"
+  name: backend-helm
+  replicas: 2
   image:
     owner: amauryfaveriel
     name: t-clo-902-back
-    version: "1.0"
+    version: "1.1"
 
 service:
-  name: svc-backend
   type: ClusterIP
 
 ports:
   applicationPort: "80"
+
+configmap:
+  name: backend-helm-configmap

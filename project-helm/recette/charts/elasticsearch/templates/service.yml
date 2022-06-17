@@ -11,9 +11,9 @@ spec:
   ports:
   - name: api
     port: {{ .Values.global.elasticsearch.ports.API.enterPort }}
-    targetPort: {{ .Values.global.elasticsearch.ports.API.applicationPort }}
+    targetPort: {{ .Values.ports.API.applicationPort }}
   - name: binary
     port: {{ .Values.global.elasticsearch.ports.binary.enterPort }}
-    targetPort: {{ .Values.global.elasticsearch.ports.binary.applicationPortB }}
+    targetPort: {{ .Values.ports.binary.applicationPort }}
   selector:
-    app: {{ .Values.global.elasticsearch.appli.name }}
+    app: {{ .Values.appli.name }}

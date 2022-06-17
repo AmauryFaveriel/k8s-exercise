@@ -7,9 +7,9 @@ metadata:
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 spec:
-  type: {{ .Values.global.rabbitmq.service.type }}
+  type: {{ .Values.service.type }}
   ports:
   - port: {{ .Values.global.rabbitmq.ports.enterPort }}
-    targetPort: {{ .Values.global.rabbitmq.ports.applicationPort}}
+    targetPort: {{ .Values.ports.applicationPort}}
   selector:
-    app: {{ .Values.global.rabbitmq.appli.name }}
+    app: {{ .Values.appli.name }}

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: rabbitmq-helm-configmap
+  name: {{ .Values.configmap.name }}
   labels:
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
