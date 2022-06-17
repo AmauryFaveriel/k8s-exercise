@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api_endpoint: `http://svc-backend-helm/api`,
+  api_endpoint: window["env"]["apiUrl"] || "default"
 };
 
 /*

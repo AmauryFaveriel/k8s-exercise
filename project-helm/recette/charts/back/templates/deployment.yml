@@ -20,6 +20,7 @@ spec:
       - name: {{ .Values.global.backend.appli.name }}
         image: {{ .Values.global.backend.appli.image.owner }}/{{ .Values.global.backend.appli.image.name }}:{{ .Values.global.backend.appli.image.version }}
         imagePullPolicy: Always
+        workingDir: /var/www/html
         env:
         {{- range .Values.global.backend.appli.env }}
         - name: {{ .name }}
@@ -27,3 +28,18 @@ spec:
         {{- end}}
         ports:
         - containerPort: {{ .Values.global.backend.ports.applicationPort }}
+      initContainers:
+      - name: database-migrate
+        image: {{ .Values.global.backend.appli.image.owner }}/{{ .Values.global.backend.appli.image.name }}:{{ .Values.global.backend.appli.image.version }}
+        workingDir: /var/www/html
+        env:
+        {{- range .Values.global.backend.appli.env }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end}}
+        command:
+          - php
+        args:
+          - artisan
+          - migrate
+          - --force

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.indexer.appli.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.global.indexer.appli.name }}
+      project: {{ .Values.global.project.name }}
+      stage: {{ .Values.global.project.stage }}
+  replicas: {{ .Values.global.indexer.appli.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.indexer.appli.name }}
+        project: {{ .Values.global.project.name }}
+        stage: {{ .Values.global.project.stage }}
+    spec:
+      containers:
+      - name: {{ .Values.global.indexer.appli.name }}
+        image: {{ .Values.global.indexer.appli.image.owner }}/{{ .Values.global.indexer.appli.image.name }}:{{ .Values.global.indexer.appli.image.version }}
+        imagePullPolicy: Always
+        env:
+        {{- range .Values.global.indexer.appli.env }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end}}

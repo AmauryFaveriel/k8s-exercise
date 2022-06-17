@@ -14,7 +14,7 @@ global:
       image:
         owner: amauryfaveriel
         name: t-clo-902-back
-        version: "1.0"
+        version: "1.1"
       env:
         - name: DB_HOST
           value: svc-mysql-helm
@@ -27,15 +27,19 @@ global:
         - name: DB_PASSWORD
           value: tc2-password
         - name: ELASTICSEARCH_URI
-          value: svc-elasticsearch-helm:9200
+          value: http://svc-elasticsearch-helm:9200
+        - name: ELASTICSEARCH_HOST
+          value: svc-elasticsearch-helm
+        - name: ELASTICSEARCH_SCHEME
+          value: http
         - name: RABBITMQ_HOST
           value: svc-rabbitmq-helm
         - name: RABBITMQ_PORT
           value: "\"5672\""
         - name: RABBITMQ_USER
-          value: rabbitmq-user
+          value: guest
         - name: RABBITMQ_PASSWORD
-          value: rabbitmq-pass
+          value: guest
         - name: RABBITMQ_VHOST
           value: /
     service:
@@ -72,7 +76,10 @@ global:
       image:
         owner: amauryfaveriel
         name: t-clo-902-front
-        version: "1.0"
+        version: "1.1"
+      env:
+        - name: API_URL
+          value: http://localhost:8080/api
     ports:
       applicationPort: "80"
       enterPort: "80"
@@ -85,11 +92,17 @@ global:
       env:
         - name: discovery.type
           value: single-node
+        - name: xpack.security.enabled
+          value: "'false'"
     service:
       name: svc-elasticsearch-helm
     ports:
-      enterPort: 9200
-      applicationPort: 9200
+      API:
+        enterPort: 9200
+        applicationPort: 9200
+      binary:
+        enterPort: 9300
+        applicationPort: 9300
   rabbitmq:
     appli:
       name: rabbitmq-helm
@@ -102,3 +115,17 @@ global:
     ports:
       enterPort: "5672"
       applicationPort: "5672"
+  indexer:
+    appli:
+      name: indexer-helm
+      replicas: 1
+      image:
+        owner: amauryfaveriel
+        name: t-clo-902-indexer
+        version: "1.0"
+      env:
+        - name: AMQP_URI
+          value: amqp://guest:guest@svc-rabbitmq-helm:5672
+        - name: ELASTICSEARCH_URI
+          value: http://svc-elasticsearch-helm:9200
+      

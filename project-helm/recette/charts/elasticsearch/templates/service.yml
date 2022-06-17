@@ -9,7 +9,11 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.global.elasticsearch.ports.enterPort }}
-    targetPort: {{ .Values.global.elasticsearch.ports.applicationPort}}
+  - name: api
+    port: {{ .Values.global.elasticsearch.ports.API.enterPort }}
+    targetPort: {{ .Values.global.elasticsearch.ports.API.applicationPort }}
+  - name: binary
+    port: {{ .Values.global.elasticsearch.ports.binary.enterPort }}
+    targetPort: {{ .Values.global.elasticsearch.ports.binary.applicationPortB }}
   selector:
     app: {{ .Values.global.elasticsearch.appli.name }}

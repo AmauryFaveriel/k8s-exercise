@@ -26,7 +26,8 @@ spec:
           value: {{ .value }}
         {{- end}}
         ports:
-        - containerPort: {{ .Values.global.elasticsearch.ports.applicationPort }}
+        - containerPort: {{ .Values.global.elasticsearch.ports.API.applicationPort }}
+        - containerPort: {{ .Values.global.elasticsearch.ports.binary.applicationPort }}
         volumeMounts:
         - name: elasticsearch-persistent-storage
           mountPath: /var/lib/elasticsearch
