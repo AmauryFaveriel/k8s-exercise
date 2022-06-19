@@ -7,9 +7,9 @@ metadata:
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 spec:
-  type: {{ .Values.global.mysql.service.type }}
+  type: {{ .Values.service.type }}
   ports:
   - port: {{ .Values.global.mysql.ports.enterPort }}
-    targetPort: {{ .Values.global.mysql.ports.applicationPort}}
+    targetPort: {{ .Values.ports.applicationPort}}
   selector:
-    app: {{ .Values.global.mysql.appli.name }}
+    app: {{ .Values.appli.name }}

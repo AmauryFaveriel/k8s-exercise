@@ -1,0 +1,14 @@
+appli:
+  name: rabbitmq-helm
+  image:
+    name: rabbitmq
+    version: "3.10"
+
+service:
+  type: ClusterIP
+
+ports:
+  applicationPort: "5672"
+
+configmap:
+  name: rabbitmq-helm-configmap

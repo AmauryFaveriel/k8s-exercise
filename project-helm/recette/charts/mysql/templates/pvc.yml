@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.global.mysql.pvc.name }}
+  name: {{ .Values.pvc.name }}
   labels:
-    app: {{ .Values.global.mysql.appli.name }}
+    app: {{ .Values.appli.name }}
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 spec:

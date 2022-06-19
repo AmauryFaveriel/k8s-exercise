@@ -19,21 +19,17 @@ spec:
     spec:
       containers:
       - image: {{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
-        name: {{ .Values.appli.name }}
-        env:
-          # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: password
-        {{- range .Values.global.mysql.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        name: {{ .Values.appli.name}}
         ports:
         - containerPort: {{ .Values.ports.applicationPort }}
         volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+            - name: rabbitmq-conf
+              mountPath: /etc/rabbitmq/rabbitmq.conf
+              subPath: rabbitmq.conf
       volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: {{ .Values.pvc.name }}
+        - name: rabbitmq-conf
+          configMap:
+            name: {{ .Values.configmap.name }}
+            items:
+            - key: rabbitmq.conf
+              path: rabbitmq.conf

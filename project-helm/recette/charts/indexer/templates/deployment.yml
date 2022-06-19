@@ -20,22 +20,8 @@ spec:
       - name: {{ .Values.appli.name }}
         image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         imagePullPolicy: Always
-        workingDir: /var/www/html
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.configmap.name }}
-        ports:
-        - containerPort: {{ .Values.ports.applicationPort }}
-      initContainers:
-      - name: database-migrate
-        image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
-        workingDir: /var/www/html
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.configmap.name }}
-        command:
-          - php
-        args:
-          - artisan
-          - migrate
-          - --force
+        env:
+        {{- range .Values.global.indexer.appli.env }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end}}

@@ -1,14 +1,13 @@
 appli:
-  name: frontend
-  replicas: "2"
+  name: frontend-helm
+  replicas: 2
   image:
-    owner: deexma
-    name: front
-    version: "1"
+    owner: amauryfaveriel
+    name: t-clo-902-front
+    version: "1.1"
 
 service:
-  name: svc-frontend
   type: ClusterIP
 
 ports:
-  applicationPort: "4200"
+  applicationPort: "80"

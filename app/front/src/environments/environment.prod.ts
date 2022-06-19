@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_endpoint: "http://svc-backend-helm/api",
+  api_endpoint: window["env"]["apiUrl"] || "default"
 };

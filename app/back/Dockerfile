@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mysqli \
     && docker-php-ext-install zip \
+    && docker-php-ext-install bcmath \
     && docker-php-source delete
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

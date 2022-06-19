@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+  labels:
+    project: {{ .Values.global.project.name }}
+    stage: {{ .Values.global.project.stage }}
+data:
+  rabbitmq.conf:
+{{ .Files.Get "conf/rabbitmq.conf" | indent 4 }}

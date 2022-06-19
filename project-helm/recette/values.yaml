@@ -1,42 +1,18 @@
-db_vars:
-  name: tc2-database
-  user: tc2-user
-  password: tc2-password
-
 global:
   project:
     name: t-clo-902
     stage: recette
   backend:
-    appli:
-      name: backend-helm
-      replicas: 2
-      image:
-        owner: amauryfaveriel
-        name: t-clo-902-back
-        version: "1.0"
-      env:
-        - name: DB_HOST
-          value: svc-mysql-helm
-        - name: DB_PORT
-          value: "\"3306\""
-        - name: DB_DATABASE
-          value: tc2-database
-        - name: DB_USERNAME
-          value: tc2-user
-        - name: DB_PASSWORD
-          value: tc2-password
-        - name: ELASTICSEARCH_URI
-          value: svc-elasticsearch-helm:9200
     service:
       name: svc-backend-helm
-      type: ClusterIP
     ports:
       enterPort: "80"
-      applicationPort: "80"
   mysql:
     appli:
-      name: mysql-helm
+      credentials:
+        user: tc2-user
+        password: tc2-password
+        dbname: tc2-database
       env:
         - name: MYSQL_USER
           value: tc2-user
@@ -44,39 +20,48 @@ global:
           value: tc2-password
         - name: MYSQL_DATABASE
           value: tc2-database
-    image:
-      name: mariadb
-      version: "10.7"
     ports:
-      applicationPort: "3306"
       enterPort: "3306"
     service:
       name: svc-mysql-helm
-      type: ClusterIP
-    pvc:
-      name: tc2-mysql-pvc-helm
   frontend:
     appli:
-      name: frontend-helm
-      replicas: 1
-      image:
-        owner: amauryfaveriel
-        name: t-clo-902-front
-        version: "1.0"
+      env:
+        - name: API_URL
+          value: http://localhost:8080/api
     ports:
-      applicationPort: "80"
       enterPort: "80"
     service:
       name: svc-frontend-helm
-      type: ClusterIP
   elasticsearch:
     appli:
-      name: elasticsearch-helm
       env:
         - name: discovery.type
           value: single-node
+        - name: xpack.security.enabled
+          value: "'false'"
     service:
       name: svc-elasticsearch-helm
     ports:
-      enterPort: 9200
-      applicationPort: 9200
+      API:
+        enterPort: 9200
+      binary:
+        enterPort: 9300
+  rabbitmq:
+    appli:
+      credentials:
+        user: guest
+        password: guest
+        vhost: /
+    service:
+      name: svc-rabbitmq-helm
+    ports:
+      enterPort: "5672"
+  indexer:
+    appli:
+      env:
+        - name: AMQP_URI
+          value: amqp://guest:guest@svc-rabbitmq-helm:5672
+        - name: ELASTICSEARCH_URI
+          value: http://svc-elasticsearch-helm:9200
+      

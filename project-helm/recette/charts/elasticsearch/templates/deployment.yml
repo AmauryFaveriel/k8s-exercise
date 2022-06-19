@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.elasticsearch.appli.name}}
+  name: {{ .Values.appli.name}}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.elasticsearch.appli.name}}
+      app: {{ .Values.appli.name}}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
   strategy:
@@ -13,24 +13,25 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.global.elasticsearch.appli.name }}
+        app: {{ .Values.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - image: {{ .Values.deployment.image.name}}:{{ .Values.deployment.image.version }}
-        name: {{ .Values.global.elasticsearch.appli.name}}
+      - image: {{ .Values.appli.image.name}}:{{ .Values.appli.image.version }}
+        name: {{ .Values.appli.name}}
         env:
         {{- range .Values.global.elasticsearch.appli.env }}
         - name: {{ .name }}
           value: {{ .value }}
         {{- end}}
         ports:
-        - containerPort: {{ .Values.global.elasticsearch.ports.applicationPort }}
+        - containerPort: {{ .Values.ports.API.applicationPort }}
+        - containerPort: {{ .Values.ports.binary.applicationPort }}
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: elasticsearch-persistent-storage
           mountPath: /var/lib/elasticsearch
       volumes:
-      - name: mysql-persistent-storage
+      - name: elasticsearch-persistent-storage
         persistentVolumeClaim:
           claimName: {{ .Values.pvc.name }}

@@ -1,0 +1,7 @@
+appli:
+  name: indexer-helm
+  replicas: 1
+  image:
+    owner: amauryfaveriel
+    name: t-clo-902-indexer
+    version: "1.0"

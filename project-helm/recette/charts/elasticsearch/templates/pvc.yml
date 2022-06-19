@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.pvc.name }}
   labels:
-    app: {{ .Values.global.elasticsearch.appli.name }}
+    app: {{ .Values.appli.name }}
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 spec:
