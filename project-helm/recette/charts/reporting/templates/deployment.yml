@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.reporting.appli.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.global.reporting.appli.name}}
+      project: {{ .Values.global.project.name }}
+      stage: {{ .Values.global.project.stage }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.reporting.appli.name }}
+        project: {{ .Values.global.project.name }}
+        stage: {{ .Values.global.project.stage }}
+    spec:
+      containers:
+      - image: {{ .Values.global.reporting.image.name}}:{{ .Values.global.reporting.image.version }}
+        name: {{ .Values.global.reporting.appli.name}}
+        env:
+        - name: DB_URI
+          value: {{ .Values.db_vars.user }}:{{ .Values.db_vars.password }}@tcp({{.Values.global.mysql.service.name}}:{{.Values.global.mysql.ports.applicationPort}})/{{ .Values.db_vars.name }}
+        - name: WEBHOOK_URL
+          value: https://outlook.office.com/webhook/

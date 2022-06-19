@@ -1,0 +1,7 @@
+appli:
+  name: reporting
+  replicas: "1"
+  image:
+    owner: deexma
+    name: reporting
+    version: "1"
