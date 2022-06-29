@@ -20,14 +20,9 @@ spec:
       containers:
       - image: {{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         name: {{ .Values.appli.name }}
-        env:
-          # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: password
-        {{- range .Values.global.mysql.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.secret.name }}
         ports:
         - containerPort: {{ .Values.ports.applicationPort }}
         volumeMounts:

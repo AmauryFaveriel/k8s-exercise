@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.reporting.appli.name}}
+  name: {{ .Values.appli.name}}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.global.reporting.appli.name}}
+      app: {{ .Values.appli.name}}
       project: {{ .Values.global.project.name }}
       stage: {{ .Values.global.project.stage }}
   strategy:
@@ -13,15 +13,15 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.global.reporting.appli.name }}
+        app: {{ .Values.appli.name }}
         project: {{ .Values.global.project.name }}
         stage: {{ .Values.global.project.stage }}
     spec:
       containers:
-      - image: {{ .Values.global.reporting.image.name}}:{{ .Values.global.reporting.image.version }}
-        name: {{ .Values.global.reporting.appli.name}}
+      - image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
+        name: {{ .Values.appli.name}}
         env:
         - name: DB_URI
-          value: {{ .Values.db_vars.user }}:{{ .Values.db_vars.password }}@tcp({{.Values.global.mysql.service.name}}:{{.Values.global.mysql.ports.applicationPort}})/{{ .Values.db_vars.name }}
+          value: {{ .Values.global.mysql.appli.credentials.user }}:{{ .Values.global.mysql.appli.credentials.password }}@tcp({{.Values.global.mysql.service.name}}:{{.Values.global.mysql.ports.enterPort}})/{{ .Values.global.mysql.appli.credentials.dbname }}
         - name: WEBHOOK_URL
-          value: https://outlook.office.com/webhook/
+          value: "https://epitechfr.webhook.office.com/webhookb2/d439681e-a04a-479a-a1ff-dc9695bd41f3@901cb4ca-b862-4029-9306-e5cd0f6d9f86/IncomingWebhook/962b5cf5825b4571b69d0a5ae5404d35/9671a61f-3b7b-451c-a975-567520411f94"

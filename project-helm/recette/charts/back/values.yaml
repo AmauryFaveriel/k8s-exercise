@@ -7,10 +7,13 @@ appli:
     version: "1.1"
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
 
 ports:
   applicationPort: "80"
 
 configmap:
   name: backend-helm-configmap
+
+secret:
+  name: backend-helm-secret

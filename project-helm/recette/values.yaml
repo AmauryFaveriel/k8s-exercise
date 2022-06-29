@@ -13,33 +13,19 @@ global:
         user: tc2-user
         password: tc2-password
         dbname: tc2-database
-      env:
-        - name: MYSQL_USER
-          value: tc2-user
-        - name: MYSQL_PASSWORD
-          value: tc2-password
-        - name: MYSQL_DATABASE
-          value: tc2-database
     ports:
       enterPort: "3306"
     service:
       name: svc-mysql-helm
   frontend:
-    appli:
-      env:
-        - name: API_URL
-          value: http://localhost:8080/api
     ports:
       enterPort: "80"
     service:
       name: svc-frontend-helm
   elasticsearch:
     appli:
-      env:
-        - name: discovery.type
-          value: single-node
-        - name: xpack.security.enabled
-          value: "'false'"
+      credentials:
+        password: elasticsearch-pass
     service:
       name: svc-elasticsearch-helm
     ports:
@@ -50,18 +36,11 @@ global:
   rabbitmq:
     appli:
       credentials:
-        user: guest
-        password: guest
+        user: rabbitmq-user
+        password: rabbitmq-pass
         vhost: /
     service:
       name: svc-rabbitmq-helm
     ports:
       enterPort: "5672"
-  indexer:
-    appli:
-      env:
-        - name: AMQP_URI
-          value: amqp://guest:guest@svc-rabbitmq-helm:5672
-        - name: ELASTICSEARCH_URI
-          value: http://svc-elasticsearch-helm:9200
       

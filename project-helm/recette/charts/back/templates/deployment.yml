@@ -24,6 +24,8 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ .Values.configmap.name }}
+        - secretRef:
+            name: {{ .Values.secret.name }}
         ports:
         - containerPort: {{ .Values.ports.applicationPort }}
       initContainers:
@@ -33,6 +35,8 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ .Values.configmap.name }}
+        - secretRef:
+            name: {{ .Values.secret.name }}
         command:
           - php
         args:

@@ -1,13 +1,16 @@
 appli:
   name: frontend-helm
-  replicas: 2
+  replicas: 1
   image:
     owner: amauryfaveriel
     name: t-clo-902-front
     version: "1.1"
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
 
 ports:
   applicationPort: "80"
+
+configmap:
+  name: frontend-helm-configmap

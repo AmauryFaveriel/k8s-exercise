@@ -5,3 +5,6 @@ appli:
     owner: amauryfaveriel
     name: t-clo-902-indexer
     version: "1.0"
+
+secret:
+  name: indexer-helm-secret

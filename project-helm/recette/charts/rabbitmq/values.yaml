@@ -10,5 +10,5 @@ service:
 ports:
   applicationPort: "5672"
 
-configmap:
-  name: rabbitmq-helm-configmap
+secret:
+  name: rabbitmq-helm-secret

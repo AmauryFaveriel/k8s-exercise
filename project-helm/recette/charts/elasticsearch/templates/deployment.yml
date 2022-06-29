@@ -20,11 +20,11 @@ spec:
       containers:
       - image: {{ .Values.appli.image.name}}:{{ .Values.appli.image.version }}
         name: {{ .Values.appli.name}}
-        env:
-        {{- range .Values.global.elasticsearch.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configmap.name }}
+        - secretRef:
+            name: {{ .Values.secret.name }}
         ports:
         - containerPort: {{ .Values.ports.API.applicationPort }}
         - containerPort: {{ .Values.ports.binary.applicationPort }}

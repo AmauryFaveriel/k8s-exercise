@@ -28,8 +28,8 @@ spec:
               subPath: rabbitmq.conf
       volumes:
         - name: rabbitmq-conf
-          configMap:
-            name: {{ .Values.configmap.name }}
+          secret:
+            secretName: {{ .Values.secret.name }}
             items:
             - key: rabbitmq.conf
               path: rabbitmq.conf

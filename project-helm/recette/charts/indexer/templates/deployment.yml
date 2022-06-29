@@ -20,8 +20,6 @@ spec:
       - name: {{ .Values.appli.name }}
         image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         imagePullPolicy: Always
-        env:
-        {{- range .Values.global.indexer.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.secret.name }}

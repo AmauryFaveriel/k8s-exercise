@@ -1,7 +1,7 @@
 appli:
-  name: reporting
+  name: reporting-helm
   replicas: "1"
   image:
-    owner: deexma
-    name: reporting
-    version: "1"
+    owner: amauryfaveriel
+    name: t-clo-902-reporting
+    version: "0.1"

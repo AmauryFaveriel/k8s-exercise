@@ -12,3 +12,6 @@ ports:
 
 pvc:
   name: tc2-mysql-pvc-helm
+
+secret:
+  name: mysql-helm-secret

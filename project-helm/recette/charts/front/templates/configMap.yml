@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+  labels:
+    app: {{ .Values.appli.name }}
+    project: {{ .Values.global.project.name }}
+    stage: {{ .Values.global.project.stage }}
+data:
+  API_URL: http://104.199.108.73/api

@@ -20,10 +20,8 @@ spec:
       - name: {{ .Values.appli.name }}
         image: {{ .Values.appli.image.owner }}/{{ .Values.appli.image.name }}:{{ .Values.appli.image.version }}
         imagePullPolicy: Always
-        env:
-        {{- range .Values.global.frontend.appli.env }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end}}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configmap.name }}
         ports:
         - containerPort: {{ .Values.ports.applicationPort }}

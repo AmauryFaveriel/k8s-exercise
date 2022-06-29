@@ -3,8 +3,9 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configmap.name }}
   labels:
+    app: {{ .Values.appli.name }}
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 data:
-  rabbitmq.conf:
-{{ .Files.Get "conf/rabbitmq.conf" | indent 4 }}
+  discovery.type: single-node
+  xpack.security.enabled: "false"
