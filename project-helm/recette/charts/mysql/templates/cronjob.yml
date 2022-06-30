@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup-mysql
+  namespace: default
+spec:
+  schedule: "0 12 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: mysql-backup
+              image: amauryfaveriel/mysql-backup:1.0
+              command: ["bash",  "/srv/jobs/backup-mariadb.sh"]
+              volumeMounts:
+            - name: backup-mysql-conf
+              mountPath: /srv/jobs/backup-mariadb.sh
+              subPath: backup-mariadb.sh     
+          volumes:
+            - name: {{ .Values.backup.configmap }}
+              configMap:
+                name: {{ .Values.backup.configmap }}
+                items:
+                - key: backup-mariadb.sh
+                  path: backup-mariadb.sh
+          restartPolicy: Never

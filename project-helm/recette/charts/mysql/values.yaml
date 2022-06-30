@@ -15,3 +15,7 @@ pvc:
 
 secret:
   name: mysql-helm-secret
+
+backup:
+  server:
+  configmap: mysql-backup-configmap

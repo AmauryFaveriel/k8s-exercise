@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.backup.configmap }}
+  labels:
+    project: {{ .Values.global.project.name }}
+    stage: {{ .Values.global.project.stage }}
+type: Opaque
+stringData: |
+    #!/bin/bash
+
+    ############# SET VARIABLES #############
+
+    # Env Variables
+    BACKUPSERVER="{{ .Values.backup.server}}" # Backup Server Ip
+    BACKUPDIR=/var/backup/mysql
+    BACKUPREMOTEDIR="/mnt/backup/kubernetes/"
+    HOST={{ .Values.global.mysql.service.name }}:{{ .Values.global.mysql.ports.enterPort }}"
+    NOW="$(date +"%Y-%m-%d")"
+    STARTTIME=$(date +"%s")
+    USER={{ .Values.global.mysql.appli.credentials.user }}
+    PASS={{ .Values.global.mysql.appli.credentials.password }}
+
+
+    ############# BUILD ENVIROMENT #############
+    # Check if temp Backup Directory is empty
+    mkdir $BACKUPDIR
+
+    if [ "$(ls -A $BACKUPDIR)" ]; then
+        echo "Take action $BACKUPDIR is not Empty"
+        rm -f $BACKUPDIR/*.gz
+        rm -f $BACKUPDIR/*.mysql
+    else
+        echo "$BACKUPDIR is Empty"
+    fi
+
+    ############# BACKUP SQL DATABASES #############
+    for DB in $(mysql -u$USER -p$PASS -h $HOST -e 'show databases' -s --skip-column-names); do
+        mysqldump -u$USER -p$PASS -h $HOST --lock-tables=false $DB > "$BACKUPDIR/$DB.sql";
+    done
+
+    ############# ZIP BACKUP #############
+    cd $BACKUPDIR
+    tar -zcvf backup-${NOW}.tar.gz *.sql
+
+    ############# MOVE BACKUP TO REMOTE #############
+    rsync -avz $BACKUPDIR/backup-${NOW}.tar.gz root@$BACKUPSERVER:$

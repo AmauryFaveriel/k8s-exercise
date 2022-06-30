@@ -7,4 +7,4 @@ metadata:
     project: {{ .Values.global.project.name }}
     stage: {{ .Values.global.project.stage }}
 data:
-  API_URL: http://104.199.108.73/api
+  API_URL: http://{{ .Values.env.api_url }}/api
